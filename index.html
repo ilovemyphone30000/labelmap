@@ -23,6 +23,16 @@ button:hover{border-color:var(--muted)}
 button:focus-visible{outline:2px solid var(--wmg);outline-offset:1px}
 button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
 .hits{font-size:13px;color:var(--muted)}
+.lvl{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);
+ white-space:nowrap}
+#expand,#collapse{min-width:84px}
+#lvltxt{display:inline-block;min-width:96px}
+.lvldots{display:inline-flex;gap:3px}
+.lvldots i{width:7px;height:7px;border-radius:50%;display:block;border:1px solid var(--rule);
+ background:transparent;transition:background .12s,border-color .12s}
+.lvldots i.on{background:var(--ink);border-color:var(--ink)}
+button:disabled{opacity:.4;cursor:default}
+button:disabled:hover{border-color:var(--rule)}
 #quizBtn{margin-left:auto}
 .back{display:none;align-items:center;gap:6px;font-weight:600}
 .back.on{display:inline-flex}
@@ -155,6 +165,7 @@ tr.tr:hover{background:var(--soft);cursor:pointer}
     <input id="q" type="search" placeholder="Search any label" autocomplete="off" aria-label="Search labels">
     <button id="expand">Expand</button>
     <button id="collapse">Collapse</button>
+    <span class="lvl" id="lvl"><span class="lvldots" id="lvldots"></span><span id="lvltxt"></span></span>
     <span class="hits" id="hits"></span>
     <button id="quizBtn">Quiz mode</button>
   </div>
@@ -774,8 +785,16 @@ q.oninput=apply;
 function syncLevelBtns(){
   const e=document.getElementById('expand'), c=document.getElementById('collapse');
   e.disabled = xLevel>=xMax; c.disabled = xLevel<=0;
-  e.title='Show one more layer — '+xLevel+' of '+xMax+' open';
-  c.title='Hide a layer — '+xLevel+' of '+xMax+' open';
+  // Labels stay fixed: changing them resizes the buttons and the row shifts under
+  // the cursor mid-click. The readout carries the state instead.
+  e.title='Show one more layer'; c.title='Hide a layer';
+  let dots='';
+  for(let i=1;i<=xMax;i++) dots+='<i class="'+(i<=xLevel?'on':'')+'"></i>';
+  document.getElementById('lvldots').innerHTML=dots;
+  document.getElementById('lvltxt').textContent =
+    xLevel===0 ? 'all collapsed'
+    : xLevel>=xMax ? 'all '+xMax+' layers open'
+    : xLevel+' of '+xMax+' layers';
 }
 function setLevel(l){
   xLevel=Math.max(0,Math.min(xMax,l));
