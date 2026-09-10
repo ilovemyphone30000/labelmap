@@ -617,7 +617,7 @@ const BIO={
 "Latium Entertainment": "Los Angeles music and management company founded in 1999 by Charles and Debra Chavez.",
 "RBC Records": "Independent hip-hop label founded by Ben Grossi and Brian Shafton, acquired by BMG in 2018."
 };
-const SLUGFIX={"(dis)harmony":"disharmony0","Parametric":"parametric0"};
+const SLUGFIX={"(dis)harmony":"disharmony0","Parametric":"parametric0","'94 Sounds":"94sounds0"};
 const slug=s=>SLUGFIX[s]||s.toLowerCase().replace(/[^a-z0-9]/g,'');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const META=new Map(), ROWS=[];
