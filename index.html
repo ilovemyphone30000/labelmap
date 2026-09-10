@@ -157,6 +157,9 @@ tr.tr:hover{background:var(--soft);cursor:pointer}
 #qhint{font-size:12px;padding:6px 11px}
 .qhinttext{font-size:13px;color:var(--muted)}
 .qhinttext b{color:var(--ink)}
+.qbio{font-size:13.5px;color:var(--muted);line-height:1.45;text-align:center;max-width:520px;
+ min-height:38px;opacity:0;transition:opacity .2s}
+.qbio.on{opacity:1}
 @media(max-width:640px){.qlevels{grid-template-columns:1fr}.qlev{min-height:0}}
 
 </style>
@@ -211,6 +214,7 @@ tr.tr:hover{background:var(--soft);cursor:pointer}
       <span class="qhinttext" id="qhinttext"></span>
     </div>
     <div class="qfb" id="qfb"></div>
+    <div class="qbio" id="qbio"></div>
   </div>
   <div class="qmid qover" id="qend" hidden>
     <div class="qprompt">Final score</div>
@@ -273,21 +277,21 @@ const T={
   
   {n:"Republic Corps",c:[{n:"Island Records"},{n:"Mercury Records"},{n:"Def Jam Recordings",c:[{n:"4th & Broadway"},{n:"ARTium"},{n:"Disturbing Tha Peace Records"},{n:"Native Records"},{n:"Stack or Starve Records"},{n:"We The Best Music Group"}]},{n:"Republic Records",c:[{n:"ALT:VISION"},{n:"American Recordings"},{n:"Amigo Records"},{n:"Boominati Worldwide"},{n:"Brushfire Records"},{n:"Casablanca Records"},{n:"Hikari-ULTRA"},{n:"IMPERIAL"},{n:"Lava Records"},{n:"Stardog Records"},{n:"The Trenches",aff:true,rel:"JV"},{n:"Young Money Entertainment"},{n:"Cash Money Records",c:[{n:"Cash Money West"}]},{n:"So What The Fuss Records"}]}]},
   {n:"Capitol Music Group",c:[{n:"Astralwerks Records"},{n:"Blue Note Records"},{n:"Capitol CMG"},{n:"Capitol Records"},{n:"Harvest Records"},{n:"Motown Records",c:[{n:"Blacksmith Recordings"}]}]},
-  {n:"Verve Label Group",c:[{n:"Decca Classics"},{n:"Decca Gold"},{n:"Decca Records"},{n:"Deutsche Grammophon"},{n:"ECM Records"},{n:"Impulse Records"},{n:"Mercury KX"},{n:"Verve Forecast"},{n:"Verve Records"}]},
+  {n:"Verve Label Group",c:[{n:"Decca Records"},{n:"ECM Records"},{n:"Impulse Records"},{n:"Mercury KX"},{n:"Verve Forecast"},{n:"Verve Records"}]},
   {n:"Universal Music Group Nashville",c:[{n:"Capitol Records Nashville"},{n:"EMI Records Nashville"},{n:"MCA Nashville"},{n:"Mercury Nashville"}]},
   {n:"Universal Music UK",c:[{n:"0207 Def Jam"},{n:"Capitol Records UK"},{n:"Island Records UK"}]},
   
   {n:"EMI Records",c:[{n:"AMF Records"},{n:"Minos EMI"}]},
   {n:"Universal Music Latin Entertainment",c:[{n:"AfterCluv"},{n:"Universal Music Chile"},{n:"Universal Music Latino"}]},
   {n:"Virgin Music Group",c:[{n:"Neon Gold"},{n:"Virgin Music"},{n:"Virgin Music Latin"}]},
-  {n:"Direct subsidiaries",lbl:true,c:[{n:"10:22 pm"},{n:"A&M Records"},{n:"Calderstone Productions"},{n:"Doggy Style Records"},{n:"Fiction Records"},{n:"ForeFront Records"},{n:"G-Unit Records"},{n:"Lench Mob Records"},{n:"Mass Appeal Records"},{n:"Mercury Classics"},{n:"MonoX"},{n:"Polar Music"},{n:"Polydor Records"},{n:"Romance Musique"},{n:"Spinefarm Records"},{n:"T-Boy Records"},{n:"Universal Arabic Music"},{n:"Victor Victor Worldwide"},{n:"XO Records"}]},
+  {n:"Direct subsidiaries",lbl:true,c:[{n:"10:22 pm"},{n:"A&M Records"},{n:"Calderstone Productions"},{n:"Doggy Style Records"},{n:"Fiction Records"},{n:"ForeFront Records"},{n:"G-Unit Records"},{n:"Lench Mob Records"},{n:"Mass Appeal Records"},{n:"MonoX"},{n:"Polar Music"},{n:"Polydor Records"},{n:"Romance Musique"},{n:"Spinefarm Records"},{n:"T-Boy Records"},{n:"Universal Arabic Music"},{n:"Victor Victor Worldwide"},{n:"XO Records"}]},
   {n:"HYBE Labels",aff:true,rel:"DIST",c:[{n:"ADOR"},{n:"BELIFT LAB"},{n:"BigHit Music"},{n:"KOZ Entertainment"},{n:"PLEDIS Entertainment"},{n:"Quality Control Music"},{n:"SB Projects"},{n:"Source Music"}]},
   {n:"Big Loud",aff:true,rel:"DIST",c:[{n:"Big Loud Records"},{n:"Big Loud Rock"},{n:"Big Loud Texas"}]},
   {n:"Partisan Records",aff:true,rel:"DIST",c:[{n:"section1"},{n:"Select Discs"}]},
   {n:"Territory arms",terr:true,lbl:true,c:[{n:"Universal Music France"},{n:"Capitol Music France"},{n:"Decca Records France"},{n:"Island Def Jam"},{n:"Polydor France"},{n:"Virgin Records France"},{n:"Universal Music Germany"},{n:"Airforce1 Records"},{n:"Vertigo Berlin"},{n:"Virgin Records Germany"},{n:"Universal Music Australia"},{n:"Island Records Australia"},{n:"Modular Recordings"},{n:"Universal Music Denmark"},{n:"Copenhagen Records"},{n:"Def Jam Recordings Denmark"},{n:"Universal Music Belgium"},{n:"Top Notch Music"},{n:"Universal Music México"}]}]},
  sony:{name:"Sony Music Group",b:[
-  {n:"Sony Music Entertainment",c:[{n:"(dis)harmony"},{n:"5020 Records"},{n:"Babygrande Records"},{n:"Beach Street Records"},{n:"Big Brother Recordings"},{n:"Century Media"},{n:"Disruptor Records"},{n:"Freebandz"},{n:"Human Re Sources"},{n:"InsideOut Music"},{n:"Kemosabe Records"},{n:"Legacy Recordings"},{n:"Louder Than Life Records"},{n:"Ministry of Sound"},{n:"Monument Records"},{n:"Mr. 305 Inc."},{n:"Okeh Records"},{n:"Palm Tree Crew"},{n:"Polo Grounds Music"},{n:"Quartz Hill Records"},{n:"RCA Inspiration"},{n:"RECORDS Co"},{n:"Robots and Humans"},{n:"Signal Records"},{n:"Som Livre"},{n:"Sony Classical"},{n:"STMPD RCRDS"},{n:"Triple Tigers"},{n:"Ultra Records"},{n:"Columbia Records",c:[{n:"30th Century Records"},{n:"Zelig Records"}]},{n:"Epic Records",c:[{n:"Bad Boy Worldwide Entertainment"}]},{n:"RCA Records",c:[{n:"Keep Cool"},{n:"Since '93"},{n:"Bourne Creatives"}]},{n:"Provident Label Group",c:[{n:"Essential Records"},{n:"Reunion Records"}]},{n:"Alamo Records",c:[{n:"Santa Anna"}]},{n:"Sony Music Masterworks",c:[{n:"XXIM Records"}]}]},
-  {n:"Sony Music Entertainment UK",c:[{n:"5K Records"},{n:"B1 Recordings"},{n:"Columbia Records UK"},{n:"Insanity Records"},{n:"Relentless Records"},{n:"Syco Entertainment"}]},
+  {n:"Sony Music Entertainment",c:[{n:"(dis)harmony"},{n:"5020 Records"},{n:"Babygrande Records"},{n:"Beach Street Records"},{n:"Big Brother Recordings"},{n:"Century Media"},{n:"Disruptor Records"},{n:"Freebandz"},{n:"Human Re Sources"},{n:"InsideOut Music"},{n:"Kemosabe Records"},{n:"Legacy Recordings"},{n:"Louder Than Life Records"},{n:"Ministry of Sound"},{n:"Monument Records"},{n:"Mr. 305 Inc."},{n:"Okeh Records"},{n:"Palm Tree Crew"},{n:"Polo Grounds Music"},{n:"Quartz Hill Records"},{n:"RCA Inspiration"},{n:"RECORDS Co"},{n:"Robots and Humans"},{n:"Signal Records"},{n:"Som Livre"},{n:"STMPD RCRDS"},{n:"Triple Tigers"},{n:"Ultra Records"},{n:"Columbia Records",c:[{n:"30th Century Records"},{n:"Zelig Records"}]},{n:"Epic Records",c:[{n:"Bad Boy Worldwide Entertainment"}]},{n:"RCA Records",c:[{n:"Keep Cool"},{n:"Since '93"},{n:"Bourne Creatives"}]},{n:"Provident Label Group",c:[{n:"Essential Records"},{n:"Reunion Records"}]},{n:"Alamo Records",c:[{n:"Santa Anna"}]},{n:"Sony Music Masterworks",c:[{n:"XXIM Records"}]}]},
+  {n:"Sony Music Entertainment UK",c:[{n:"5K Records"},{n:"B1 Recordings"},{n:"Columbia Records UK"},{n:"Insanity Records"},{n:"Relentless Records"}]},
   {n:"AWAL"},
   {n:"Rimas Entertainment",aff:true,rel:"DIST",c:[{n:"Nabru Records"},{n:"Nain Music"},{n:"Dale Play Records"}]},
   {n:"Territory arms",terr:true,lbl:true,c:[{n:"Sony Music Entertainment Germany"},{n:"Columbia Germany"},{n:"Famouz Records"},{n:"Four Music"},{n:"Jive Germany"},{n:"Sony Music Entertainment Italy"},{n:"Arista Italia"},{n:"Columbia Records Italy"},{n:"Sony Music Entertainment Nashville"},{n:"1021 Entertainment"},{n:"Sony Music Entertainment Brasil"},{n:"HUB Records"},{n:"Sony Music Entertainment Latin"},{n:"Pina Records"},{n:"Sony Music Entertainment Netherlands"},{n:"Epic Amsterdam"},{n:"Arista Records"}]}]},
@@ -297,7 +301,7 @@ const T={
   {n:"10K Projects",aff:true,rel:"JV",c:[{n:"'94 Sounds"},{n:"Homemade Projects"}]},
   {n:"Spinnin' Records",c:[{n:"Dharma"},{n:"Heartfeldt Records"},{n:"Heldeep Records"},{n:"Spinnin' Deep"},{n:"Spinnin' Records Asia"}]},
   {n:"Warner Records",c:[{n:"Altadena"},{n:"Major Recordings"},{n:"No Love Entertainment"},{n:"Warner Music Norway"}]},
-  {n:"Direct subsidiaries",lbl:true,c:[{n:"300 Entertainment"},{n:"ADA"},{n:"East West Records"},{n:"Erato Records"},{n:"Latium Entertainment"},{n:"Nonesuch Records"},{n:"Parlophone Records"},{n:"Qwest Records"},{n:"Reprise Records"},{n:"Rhino Entertainment"},{n:"Sire Records"},{n:"Warner Classics"},{n:"Warner Music Nashville"},{n:"WCB Wasafi"}]},
+  {n:"Direct subsidiaries",lbl:true,c:[{n:"300 Entertainment"},{n:"ADA"},{n:"East West Records"},{n:"Latium Entertainment"},{n:"Nonesuch Records"},{n:"Parlophone Records"},{n:"Qwest Records"},{n:"Reprise Records"},{n:"Rhino Entertainment"},{n:"Sire Records"},{n:"Warner Music Nashville"},{n:"WCB Wasafi"}]},
   {n:"Sub Pop",aff:true,rel:"49%",c:[{n:"Hardly Art"}]},
   {n:"Nice Life",aff:true,rel:"JV"},
   {n:"BBR Music Group",aff:true,rel:"DIST",c:[{n:"Broken Bow Records"},{n:"Stoney Creek Records"},{n:"Wheelhouse Records"},{n:"Red Bow Records"}]},
@@ -330,7 +334,6 @@ const BIO={
 "Verve Label Group": "Jazz and classical group covering Verve, Impulse!, Decca US and Verve Forecast.",
 "Impulse Records": "Jazz label founded in 1960, closely associated with John Coltrane.",
 "Decca Records": "British label founded in 1929, now Universal's classical and pop-classical home.",
-"Deutsche Grammophon": "The oldest surviving classical label, founded in Germany in 1898.",
 "Mercury KX": "Universal imprint for neo-classical and ambient music.",
 "Republic Records": "New York label founded by Monte and Avery Lipman, now the head of Republic Collective.",
 "Island Records": "Founded by Chris Blackwell in Jamaica in 1959, later a cornerstone of reggae and British rock.",
@@ -393,7 +396,6 @@ const BIO={
 "Essential Records": "Christian label within Provident.",
 "Reunion Records": "Christian label within Provident.",
 "Sony Music Masterworks": "Sony's classical, soundtrack and theatrical division.",
-"Sony Classical": "Sony's flagship classical label.",
 "Okeh Records": "Jazz label with roots going back to 1918.",
 "Century Media": "Metal label founded in Germany in 1988.",
 "InsideOut Music": "Progressive rock and metal label.",
@@ -408,7 +410,6 @@ const BIO={
 "Columbia Records UK": "British arm of Columbia.",
 "Relentless Records": "British label founded in 1999.",
 "Insanity Records": "British pop label tied to Insanity Management.",
-"Syco Entertainment": "Simon Cowell's label and television venture.",
 "5K Records": "British imprint within Sony UK.",
 "AWAL": "Artist services and distribution company founded in 1997, acquired by Sony in 2022.",
 "Human Re Sources": "Artist distribution and label services company founded by Julius Erving III.",
@@ -430,8 +431,6 @@ const BIO={
 "Nonesuch Records": "Adventurous label spanning classical, jazz and world music.",
 "Warner Music Nashville": "Warner's country division.",
 "Parlophone Records": "British label founded in 1896, famously home to The Beatles.",
-"Warner Classics": "Warner's classical division.",
-"Erato Records": "French classical label founded in 1953.",
 "East West Records": "Warner label originally founded in 1955.",
 "Rhino Entertainment": "Warner's catalogue and reissue division.",
 "ADA": "Warner's independent distribution and label services arm, founded in 1993.",
@@ -526,9 +525,6 @@ const BIO={
 "Capitol CMG": "Universal's Christian and gospel division, based in Nashville.",
 "Harvest Records": "Progressive rock label founded by EMI in 1969, later revived by Capitol.",
 "ECM Records": "Munich label founded by Manfred Eicher in 1969, known for jazz and contemporary classical.",
-"Decca Classics": "The classical arm of Decca.",
-"Decca Gold": "Decca's American classical imprint.",
-"Mercury Classics": "Classical imprint within Universal.",
 "Verve Forecast": "Verve's imprint for singer-songwriters and contemporary artists.",
 "Modular Recordings": "Australian independent label founded in 1998.",
 "Copenhagen Records": "Danish label founded in 2004.",
@@ -903,6 +899,7 @@ function qNext(){
   document.getElementById('qcard').className='qcard';
   qS('qname',p.n);
   qS('qfb','');document.getElementById('qfb').className='qfb';
+  qS('qbio','');document.getElementById('qbio').className='qbio';
   qS('qhinttext','');
   qShow('qhint',!!p.p);
   document.getElementById('qhint').disabled=false;
@@ -937,7 +934,10 @@ function qAnswer(k){
     fb.textContent=qCur.n+' is '+T[qCur.k].name;
   }
   qS('qsc',qScore);qS('qst',qStreak);qHearts();
-  setTimeout(function(){ if(qLives<=0){qEnd();}else{qNext();} }, right?600:1500);
+  const bio=BIO[qCur.n];
+  if(bio){ qS('qbio',bio); document.getElementById('qbio').className='qbio on'; }
+  // longer holds than before: a one-line bio you cannot read is not worth showing
+  setTimeout(function(){ if(qLives<=0){qEnd();}else{qNext();} }, right?1600:2600);
 }
 
 function qEnd(){
