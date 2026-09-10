@@ -160,6 +160,7 @@ tr.tr:hover{background:var(--soft);cursor:pointer}
 .qbio{font-size:13.5px;color:var(--muted);line-height:1.45;text-align:center;max-width:520px;
  min-height:38px;opacity:0;transition:opacity .2s}
 .qbio.on{opacity:1}
+#qnext{font-size:14px;padding:10px 22px;border-radius:6px}
 @media(max-width:640px){.qlevels{grid-template-columns:1fr}.qlev{min-height:0}}
 
 </style>
@@ -215,6 +216,7 @@ tr.tr:hover{background:var(--soft);cursor:pointer}
     </div>
     <div class="qfb" id="qfb"></div>
     <div class="qbio" id="qbio"></div>
+    <button id="qnext" hidden>Next</button>
   </div>
   <div class="qmid qover" id="qend" hidden>
     <div class="qprompt">Final score</div>
@@ -849,7 +851,10 @@ const QPOOL=[];
       if(!toks(nd.n).some(w=>MAJ.has(w))){
         let lev=(depth===0||(depth===1&&size(nd)>=1))?'easy':(depth===1?'medium':'hard');
         if(t&&!toks(nd.n).some(w=>home.has(w)))lev='hard';
-        QPOOL.push({n:nd.n,k:k,lev:lev,p:depth>=1?parent:null});
+        // Withhold the hint when naming the parent would name the major
+        // ("Warner Records", "Universal Music Group Nashville").
+        const hint=(depth>=1&&parent&&!toks(parent).some(w=>MAJ.has(w)))?parent:null;
+        QPOOL.push({n:nd.n,k:k,lev:lev,p:hint});
       }
       (nd.c||[]).forEach(c=>walk(c,depth+1,nd.n,t));
     };
@@ -901,6 +906,7 @@ function qNext(){
   qS('qfb','');document.getElementById('qfb').className='qfb';
   qS('qbio','');document.getElementById('qbio').className='qbio';
   qS('qhinttext','');
+  document.getElementById('qnext').hidden=true;
   qShow('qhint',!!p.p);
   document.getElementById('qhint').disabled=false;
   document.querySelectorAll('.qcol').forEach(b=>{b.disabled=false;});
@@ -936,8 +942,16 @@ function qAnswer(k){
   qS('qsc',qScore);qS('qst',qStreak);qHearts();
   const bio=BIO[qCur.n];
   if(bio){ qS('qbio',bio); document.getElementById('qbio').className='qbio on'; }
-  // longer holds than before: a one-line bio you cannot read is not worth showing
-  setTimeout(function(){ if(qLives<=0){qEnd();}else{qNext();} }, right?1600:2600);
+  // No timer: the hint, the answer and the bio stay up until you move on yourself.
+  const nx=document.getElementById('qnext');
+  nx.textContent = qLives<=0 ? 'See results' : 'Next';
+  nx.hidden=false; nx.focus();
+}
+
+function qAdvance(){
+  if(!qBusy) return;                     // also stops Enter double-firing off the button
+  document.getElementById('qnext').hidden=true;
+  if(qLives<=0){qEnd();}else{qNext();}
 }
 
 function qEnd(){
@@ -960,6 +974,7 @@ document.getElementById('qagain').onclick=()=>qStart();
 document.getElementById('qmenubtn').onclick=qOpen;
 document.getElementById('qexit2').onclick=qExit;
 document.getElementById('qhint').onclick=qUseHint;
+document.getElementById('qnext').onclick=qAdvance;
 document.querySelectorAll('.qlev').forEach(b=>{b.onclick=()=>qStart(b.dataset.l);});
 document.querySelectorAll('.qcol').forEach(b=>{b.onclick=()=>qAnswer(b.dataset.k);});
 document.addEventListener('keydown',e=>{
@@ -967,6 +982,10 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){qExit();return;}
   if(!document.getElementById('qend').hidden){if(e.key==='Enter')qStart();return;}
   if(document.getElementById('qplay').hidden)return;
+  if(qBusy){                              // answered - waiting on Next
+    if(e.key==='Enter'||e.key===' '||e.key==='n'||e.key==='N'){e.preventDefault();qAdvance();}
+    return;
+  }
   if(e.key==='h'||e.key==='H'){qUseHint();return;}
   const n=['1','2','3'].indexOf(e.key);
   if(n>=0)qAnswer(QK[n]);
