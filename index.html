@@ -47,7 +47,9 @@ button[aria-pressed="true"]{text-decoration:underline;text-underline-offset:3px}
 .lvldots{display:inline-flex;gap:4px}
 .lvldots i{width:5px;height:5px;display:block;background:var(--rule);transition:background var(--t)}
 .lvldots i.on{background:var(--ink)}
-#quizBtn{margin-left:auto;font-size:14px;color:var(--ink)}
+#pdfBtn{margin-left:auto;font-size:14px;color:var(--ink);text-decoration:none;transition:color var(--t)}
+#pdfBtn:hover{text-decoration:underline;text-underline-offset:3px}
+#quizBtn{font-size:14px;color:var(--ink)}
 #quizBtn:hover{text-decoration:underline;text-underline-offset:3px}
 .back{display:none;align-items:center;gap:6px}
 .back.on{display:inline-flex}
@@ -56,10 +58,10 @@ button[aria-pressed="true"]{text-decoration:underline;text-underline-offset:3px}
 .cols{max-width:1500px;margin:0 auto;padding:0 40px 30px;display:grid;gap:0;align-items:start;
  grid-template-columns:repeat(3,minmax(0,1fr))}
 .cols.focus{grid-template-columns:minmax(0,1fr);max-width:900px}
-.col{background:none;border-top:3px solid var(--c);padding:0 26px 0 0;margin-right:26px;
- border-right:1px solid var(--rule)}
-.cols>.col:last-child{border-right:0;margin-right:0;padding-right:0}
-.cols.focus>.col{border-right:0;margin-right:0;padding-right:0}
+.col{background:none;border-top:3px solid var(--c);
+ border-left:1px solid var(--rule);border-right:1px solid var(--rule);
+ padding:0 22px;margin:0 -1px 0 0}
+.cols.focus>.col{margin-right:0}
 .crown{display:flex;align-items:center;gap:12px;padding:18px 0 20px;cursor:pointer;width:100%;
  text-align:left;background:none;border:0}
 .crown:hover{text-decoration:none}
@@ -81,7 +83,7 @@ button[aria-pressed="true"]{text-decoration:underline;text-underline-offset:3px}
 .node:hover{color:var(--ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
 .node.b1{font-weight:600;font-size:14.5px}
 .node.b2{font-weight:400;font-size:14px}
-.tw{width:18px;height:18px;flex:none;color:var(--muted);font-size:13px;line-height:18px;
+.tw{width:22px;height:20px;flex:none;color:var(--muted);font-size:19px;line-height:20px;
  text-align:left;cursor:pointer;transition:color var(--t)}
 .tw:hover{color:var(--ink)}
 .tw.leaf{visibility:hidden}
@@ -131,7 +133,7 @@ tr.tr:hover{color:var(--ink);cursor:pointer}
  cursor:pointer;line-height:1;padding:4px}
 .x:hover{color:var(--ink);text-decoration:none}
 @media (max-width:1080px){.cols{grid-template-columns:1fr}
- .col{border-right:0;margin-right:0;padding-right:0;margin-bottom:20px}}
+ .col{margin:0 0 24px}}
 
 /* ---------- quiz mode ---------- */
 [hidden]{display:none!important}
@@ -194,6 +196,7 @@ tr.tr:hover{color:var(--ink);cursor:pointer}
     <button id="collapse">Collapse</button>
     <span class="lvl" id="lvl"><span class="lvldots" id="lvldots"></span><span id="lvltxt"></span></span>
     <span class="hits" id="hits"></span>
+    <a id="pdfBtn" href="label-map.pdf" download="major-label-map.pdf">Export PDF</a>
     <button id="quizBtn">Quiz mode</button>
   </div>
 </div>

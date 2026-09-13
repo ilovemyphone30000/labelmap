@@ -45,6 +45,13 @@ def to_json(src):
 T = json.loads(to_json(grab('T')))
 INDIE = json.loads(to_json(grab('INDIE')))
 DIST = json.loads(to_json(grab('DIST')))
+AFFIL = json.loads(to_json(grab('AFFIL')))
+
+def rel_note(name, rel):
+    """Same wording the site puts inline on the row."""
+    a = AFFIL.get(name)
+    if not a: return ''
+    return ('JV with ' + a) if rel == 'JV' else (a + ' holds 49%') if rel == '49%' else ('via ' + a)
 
 # Logos come from the HTML's own LOGO block, so the PDF is derived entirely
 # from the HTML and cannot drift from it.
@@ -54,9 +61,9 @@ LOGOS = {k: base64.b64decode(v) for k, v in
 for _k in ('umg', 'sony', 'wmg'):
     if _k not in LOGOS: raise SystemExit('LOGO block is missing %r' % _k)
 # Kept in step with the :root tokens in the HTML - if those change, change these.
-C = {'umg': HexColor('#050505'), 'sony': HexColor('#E61919'),
-     'wmg': HexColor('#0A0A0A'), 'indie': HexColor('#050505')}
-INK, MUTED, RULE, SOFT = HexColor('#050505'), HexColor('#3A3A38'), HexColor('#050505'), HexColor('#DEDBD4')
+C = {'umg': HexColor('#000000'), 'sony': HexColor('#E8382C'),
+     'wmg': HexColor('#1F49B8'), 'indie': HexColor('#000000')}
+INK, MUTED, RULE, SOFT = HexColor('#000000'), HexColor('#8A8A8A'), HexColor('#E6E6E6'), HexColor('#F4F4F4')
 
 LH, IND, MARGIN, GAP = 12.2, 11.0, 42, 26
 W = 1300.0
@@ -79,7 +86,7 @@ c.setFillColor(INK); c.setFont('Helvetica-Bold', 25)
 c.drawString(MARGIN, H - MARGIN - 14, 'MAJORS')
 c.setFillColor(MUTED); c.setFont('Helvetica', 9.5)
 c.drawString(MARGIN + 124, H - MARGIN - 13,
-             'Dashed = distribution or JV, not ownership')
+             'Italic note = distribution or joint venture, not ownership')
 
 COLW = (W - 2 * MARGIN - 2 * GAP) / 3.0
 
@@ -106,25 +113,14 @@ def draw_branch(nds, x0, y, depth, col):
             c.setFont('Helvetica', 7.4); c.setFillColor(MUTED)
             c.drawRightString(x0 + COLW - 8, y + 3, str(nodes(nd)))
         if aff:
-            c.setFillColor(col); c.setFont('Helvetica-Bold', 6)
-            pill_x = tx + 13 + c.stringWidth(label, 'Helvetica-Bold', 9.6)
-            rel = nd.get('rel', 'DIST')
-            pw = c.stringWidth(rel, 'Helvetica-Bold', 6) + 7
-            c.roundRect(pill_x, y + 1.5, pw, 8, 2, stroke=0, fill=1)
-            c.setFillColor(HexColor('#FFFFFF'))
-            c.drawString(pill_x + 3.4, y + 3.9, rel)
-        if not kids and aff:
-            c.setStrokeColor(col); c.setLineWidth(0.7); c.setDash(2, 2)
-            c.roundRect(tx + 2, y - 1.5, COLW - depth * IND - 6, LH + 1, 4, stroke=1, fill=0)
-            c.setDash()
+            note = rel_note(nd['n'], nd.get('rel', 'DIST'))
+            if note:
+                c.setFillColor(MUTED); c.setFont('Helvetica-Oblique', 6.6)
+                nx = tx + 13 + c.stringWidth(label, 'Helvetica-Bold' if depth == 0 else 'Helvetica',
+                                             9.6 if depth == 0 else 8.6)
+                c.drawString(nx, y + 3, note)
         if kids:
-            y_after = draw_branch(kids, x0, y, depth + 1, col)
-            if aff:
-                c.setStrokeColor(col); c.setLineWidth(0.7); c.setDash(2, 2)
-                c.roundRect(tx + 2, y_after + 1, COLW - depth * IND - 6,
-                            (y_top - LH + 9) - y_after, 4, stroke=1, fill=0)
-                c.setDash()
-            y = y_after
+            y = draw_branch(kids, x0, y, depth + 1, col)
     # indent guide + ticks for this sibling group
     if depth > 0 and kid_ys:
         gx = x0 + (depth - 1) * IND + 13
@@ -140,8 +136,8 @@ for i, k in enumerate(['umg', 'sony', 'wmg']):
     total = sum(1 + nodes(b) for b in T[k]['b'])
     # column card
     c.setFillColor(HexColor('#FFFFFF')); c.setStrokeColor(RULE); c.setLineWidth(0.6)
-    c.roundRect(x0 - 10, MARGIN + IND_BLOCK - 6, COLW + 20,
-                (top_y + 46) - (MARGIN + IND_BLOCK - 6), 6, stroke=1, fill=1)
+    c.rect(x0 - 10, MARGIN + IND_BLOCK - 6, COLW + 20,
+           (top_y + 46) - (MARGIN + IND_BLOCK - 6), stroke=1, fill=1)
     c.setFillColor(C[k])
     c.rect(x0 - 10, top_y + 42, COLW + 20, 4, stroke=0, fill=1)
     img = ImageReader(io.BytesIO(LOGOS[k]))
@@ -163,7 +159,7 @@ for i, g in enumerate(INDIE):
     bx = MARGIN + i * (bw + 14)
     bh = 22 + len(g['c']) * LH
     c.setFillColor(HexColor('#FFFFFF')); c.setStrokeColor(RULE); c.setLineWidth(0.6)
-    c.roundRect(bx, iy - bh, bw, bh, 5, stroke=1, fill=1)
+    c.rect(bx, iy - bh, bw, bh, stroke=1, fill=1)
     c.setFillColor(C['indie']); c.rect(bx, iy - bh, 2.5, bh, stroke=0, fill=1)
     c.setFillColor(INK); c.setFont('Helvetica-Bold', 9.6)
     c.drawString(bx + 12, iy - 15, g['n'])
