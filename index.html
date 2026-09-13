@@ -55,12 +55,12 @@ button[aria-pressed="true"]{text-decoration:underline;text-underline-offset:3px}
 .back.on{display:inline-flex}
 
 /* columns: separated by space and a hairline, not by cards */
-.cols{max-width:1500px;margin:0 auto;padding:0 40px 30px;display:grid;gap:0;align-items:start;
+.cols{max-width:1500px;margin:0 auto;padding:0 40px 30px;display:grid;gap:34px;align-items:start;
  grid-template-columns:repeat(3,minmax(0,1fr))}
 .cols.focus{grid-template-columns:minmax(0,1fr);max-width:900px}
 .col{background:none;border-top:3px solid var(--c);
  border-left:1px solid var(--rule);border-right:1px solid var(--rule);
- padding:0 22px;margin:0 -1px 0 0}
+ padding:0 20px}
 .cols.focus>.col{margin-right:0}
 .crown{display:flex;align-items:center;gap:12px;padding:18px 0 20px;cursor:pointer;width:100%;
  text-align:left;background:none;border:0}
