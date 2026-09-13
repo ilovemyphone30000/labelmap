@@ -152,6 +152,10 @@ tr.tr:hover{background:var(--soft);cursor:pointer}
 .mrow .k{color:var(--muted);flex:0 0 118px;font:500 10px/1.5 var(--mono);
  letter-spacing:.1em;text-transform:uppercase}
 .mbio{margin:14px 0 0;font-size:13.5px;line-height:1.5;color:#2C333A}
+.vf{color:var(--hazard);font-size:11px;line-height:1;flex:none;margin-left:1px}
+.mverify{margin:14px 0 0;padding:10px 12px;background:var(--card);color:var(--ink);
+ border:2px solid var(--hazard);font:600 10px/1.5 var(--mono);letter-spacing:.1em;
+ text-transform:uppercase}
 .mdist{margin:14px 0 0;padding:11px 13px;background:var(--soft);color:var(--ink);
  border-left:4px solid var(--hazard);font-size:13px;line-height:1.5}
 .go{display:inline-block;margin-top:16px;padding:11px 16px;background:var(--ink);color:var(--card);
@@ -320,6 +324,9 @@ const DIST={"XO Records":"A Universal Music Group subsidiary, distributed throug
 };
 const AFFIL={"The Trenches":"Republic Corps","Dreamville Records":"Interscope Records","LVRN":"Interscope Records","Nice Life":"Atlantic Records","10K Projects":"Warner Music Group","BBR Music Group":"ADA","Rimas Entertainment":"The Orchard","Big Loud":"Mercury/Republic","HYBE Labels":"UMG","Partisan Records":"Virgin Music Group","Sub Pop":"Warner Music Group"};
 const NOPAGE=new Set(["Merge Records"]);
+// Companies whose data is not trusted yet. Renders a hazard flag in the tree
+// and a notice in the popup. Remove a name once it has been checked by hand.
+const VERIFY=new Set(["Victor Victor Worldwide"]);
 // relationship confirmed by reading that company's ROSTR bio; everything else is parent-field only
 
 
@@ -710,7 +717,7 @@ function treeHTML(list,depth){
     h+=`<li data-n="${esc(nd.n)}" data-terr="${nd.terr?1:0}">
       <button class="node ${depth===0?'b1':'b2'}" data-open="${nd.lbl||nd.terr?'':esc(nd.n)}">
         <span class="tw${kids.length?'':' leaf'}">${kids.length?((nd.terr?depth+1:depth)>=xLevel?'▸':'▾'):''}</span>
-        <span class="lab">${esc(nd.n)}</span>
+        <span class="lab">${esc(nd.n)}</span>${VERIFY.has(nd.n)?'<span class="vf" title="Data needs verifying">&#9873;</span>':''}
         ${nd.aff?'<span class="rnote" title="'+esc(relNote(nd.n,nd.rel))+'">'+esc(relNote(nd.n,nd.rel))+'</span>':''}
         ${kids.length?`<span class="ct">${count(nd)}</span>`:''}
       </button>`;
@@ -743,8 +750,8 @@ function draw(){
     ind.dataset.done='1';
     ind.innerHTML='<h3>INDIES</h3><div class="igrid">'+INDIE.map(g=>
       `<div class="ibox" data-n="${esc(g.n)}"><div class="tree"><ul><li data-n="${esc(g.n)}" data-terr="0">
-       <button class="node b1" data-open="${esc(g.n)}"><span class="tw${g.c.length?'':' leaf'}">${g.c.length?'▾':''}</span><span class="lab">${esc(g.n)}</span>${g.c.length?`<span class="ct">${g.c.length}</span>`:''}</button>
-       ${g.c.length?`<div class="sub" data-d="0"><ul>${g.c.map(c=>`<li data-n="${esc(c)}" data-terr="0"><button class="node b2" data-open="${esc(c)}"><span class="tw leaf"></span><span class="lab">${esc(c)}</span></button></li>`).join('')}</ul></div>`:''}
+       <button class="node b1" data-open="${esc(g.n)}"><span class="tw${g.c.length?'':' leaf'}">${g.c.length?'▾':''}</span><span class="lab">${esc(g.n)}</span>${VERIFY.has(g.n)?'<span class="vf" title="Data needs verifying">&#9873;</span>':''}${g.c.length?`<span class="ct">${g.c.length}</span>`:''}</button>
+       ${g.c.length?`<div class="sub" data-d="0"><ul>${g.c.map(c=>`<li data-n="${esc(c)}" data-terr="0"><button class="node b2" data-open="${esc(c)}"><span class="tw leaf"></span><span class="lab">${esc(c)}</span>${VERIFY.has(c)?'<span class="vf" title="Data needs verifying">&#9873;</span>':''}</button></li>`).join('')}</ul></div>`:''}
       </li></ul></div></div>`).join('')+'</div>';
   }
   document.getElementById('back').classList.toggle('on',!!focus);
@@ -777,6 +784,7 @@ function openModal(n){
    <div class="mrow"><span class="k">Owner</span><span>${m.owner?esc(m.owner):(m.aff?'Independent':'Top level')}</span></div>
    <div class="mrow"><span class="k">Sits under</span><span>${esc(m.root)}</span></div>
    ${BIO[n]?`<p class="mbio">${esc(BIO[n])}</p>`:''}
+   ${VERIFY.has(n)?'<p class="mverify">&#9873; Unverified &mdash; this entry still needs checking by hand.</p>':''}
    ${DIST[n]?`<p class="mdist">${esc(DIST[n])}</p>`:''}
    ${NOPAGE.has(n)?'<p class="chain" style="margin-top:16px">Not listed in ROSTR</p>':
      `<a class="go" href="https://www.rostr.cc/company/${slug(n)}" target="_blank" rel="noopener">Open in ROSTR</a>`}`;
