@@ -54,9 +54,9 @@ LOGOS = {k: base64.b64decode(v) for k, v in
 for _k in ('umg', 'sony', 'wmg'):
     if _k not in LOGOS: raise SystemExit('LOGO block is missing %r' % _k)
 # Kept in step with the :root tokens in the HTML - if those change, change these.
-C = {'umg': HexColor('#181818'), 'sony': HexColor('#D4322A'),
-     'wmg': HexColor('#1E3A8A'), 'indie': HexColor('#3D6B4A')}
-INK, MUTED, RULE, SOFT = HexColor('#16171A'), HexColor('#6B6A67'), HexColor('#E2E0DC'), HexColor('#EFEDE9')
+C = {'umg': HexColor('#050505'), 'sony': HexColor('#E61919'),
+     'wmg': HexColor('#0A0A0A'), 'indie': HexColor('#050505')}
+INK, MUTED, RULE, SOFT = HexColor('#050505'), HexColor('#3A3A38'), HexColor('#050505'), HexColor('#DEDBD4')
 
 LH, IND, MARGIN, GAP = 12.2, 11.0, 42, 26
 W = 1300.0
